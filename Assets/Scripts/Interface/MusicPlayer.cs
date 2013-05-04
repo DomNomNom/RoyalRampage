@@ -12,16 +12,21 @@ public class MusicPlayer : MonoBehaviour {
 	public AudioSource musicStage5;
 	public AudioSource musicStage6;
 
-	//testing
-	private float rage = 1.0f;
+	//the music that is currently playing
+	private AudioSource currentlyPlaying;
+
+	//the section time for the music
+	private readonly float sectionTime = 5.992f;
+
+	//the player's rage and health
+	public RageAndHealth player;
 
 	//FUNCTIONS
 	// Use this for initialization
 	void Start () {
 	
 		//start playing the music and check again in 6 seconds
-		musicStage1.Play();
-		Invoke("checkMusic", 5.994f);
+		checkMusic();
 	}
 	
 	// Update is called once per frame
@@ -29,30 +34,29 @@ public class MusicPlayer : MonoBehaviour {
 	
 	}
 
+	//checks
 	void checkMusic() {
 
-		if (rage < 100.0f) {
+		Debug.Log(player.rage);
 
-			rage = rage + 17.0f;
-		}
-
-		if (rage < 17) {
+		//get the player's rage level and check what music stage we should play
+		if (player.rage < 17) {
 
 			musicStage1.Play();
 		}
-		else if (rage < 34) {
+		else if (player.rage < 34) {
 
 			musicStage2.Play();
 		}
-		else if (rage < 51) {
+		else if (player.rage < 51) {
 
 			musicStage3.Play();
 		}
-		else if (rage < 68) {
+		else if (player.rage < 68) {
 
 			musicStage4.Play();
 		}
-		else if (rage < 85) {
+		else if (player.rage < 85) {
 
 			musicStage5.Play();
 		}
@@ -61,9 +65,7 @@ public class MusicPlayer : MonoBehaviour {
 			musicStage6.Play();
 		}
 
-
-
 		//check again in another 6 seconds
-		Invoke("checkMusic", 5.994f);
+		Invoke("checkMusic", sectionTime);
 	}
 }
