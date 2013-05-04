@@ -61,7 +61,7 @@ private var verticalSpeed = 0.0;
 private var moveSpeed = 0.0;
 
 // The last collision flags returned from controller.Move
-private var collisionFlags : CollisionFlags; 
+private var collisionFlags : CollisionFlags;
 
 // Are we jumping? (Initiated with jump button and not grounded yet)
 private var jumping = false;
@@ -93,16 +93,16 @@ private var isControllable = true;
 function Awake ()
 {
 	moveDirection = transform.TransformDirection(Vector3.forward);
-	
+
 	_animation = GetComponent(Animation);
 	if(!_animation)
 		Debug.Log("The character you would like to control doesn't have animations. Moving her might look weird.");
-	
+
 	/*
 public var idleAnimation : AnimationClip;
 public var walkAnimation : AnimationClip;
 public var runAnimation : AnimationClip;
-public var jumpPoseAnimation : AnimationClip;	
+public var jumpPoseAnimation : AnimationClip;
 	*/
 	if(!idleAnimation) {
 		_animation = null;
@@ -120,7 +120,7 @@ public var jumpPoseAnimation : AnimationClip;
 		_animation = null;
 		Debug.Log("No jump animation found and the character has canJump enabled. Turning off animations.");
 	}
-			
+
 }
 
 
@@ -128,8 +128,8 @@ function UpdateSmoothedMovementDirection ()
 {
 	var cameraTransform = Camera.main.transform;
 	var grounded = IsGrounded();
-	
-	// Forward vector relative to the camera along the x-z plane	
+
+	// Forward vector relative to the camera along the x-z plane
 	var forward = cameraTransform.TransformDirection(Vector3.forward);
 	forward.y = 0;
 	forward = forward.normalized;
@@ -146,13 +146,13 @@ function UpdateSmoothedMovementDirection ()
 		movingBack = true;
 	else
 		movingBack = false;
-	
+
 	var wasMoving = isMoving;
 	isMoving = Mathf.Abs (h) > 0.1 || Mathf.Abs (v) > 0.1;
-		
+
 	// Target direction relative to the camera
 	var targetDirection = h * right + v * forward;
-	
+
 	// Grounded controls
 	if (grounded)
 	{
@@ -175,22 +175,22 @@ function UpdateSmoothedMovementDirection ()
 			else
 			{
 				moveDirection = Vector3.RotateTowards(moveDirection, targetDirection, rotateSpeed * Mathf.Deg2Rad * Time.deltaTime, 1000);
-				
+
 				moveDirection = moveDirection.normalized;
 			}
 		}
-		
+
 		// Smooth the speed based on the current target direction
 		var curSmooth = speedSmoothing * Time.deltaTime;
-		
+
 		// Choose target speed
 		//* We want to support analog input but make sure you cant walk faster diagonally than just forward or sideways
 		var targetSpeed = Mathf.Min(targetDirection.magnitude, 1.0);
-	
+
 		_characterState = CharacterState.Idle;
-		
+
 		// Pick speed modifier
-		if (Input.GetKey (KeyCode.LeftShift) | Input.GetKey (KeyCode.RightShift))
+		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
 		{
 			targetSpeed *= runSpeed;
 			_characterState = CharacterState.Running;
@@ -205,9 +205,9 @@ function UpdateSmoothedMovementDirection ()
 			targetSpeed *= walkSpeed;
 			_characterState = CharacterState.Walking;
 		}
-		
+
 		moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, curSmooth);
-		
+
 		// Reset walk time start when we slow down
 		if (moveSpeed < walkSpeed * 0.3)
 			walkTimeStart = Time.time;
@@ -222,9 +222,9 @@ function UpdateSmoothedMovementDirection ()
 		if (isMoving)
 			inAirVelocity += targetDirection.normalized * Time.deltaTime * inAirControlAcceleration;
 	}
-	
 
-		
+
+
 }
 
 
@@ -237,7 +237,7 @@ function ApplyJumping ()
 	if (IsGrounded()) {
 		// Jump
 		// - Only when pressing the button down
-		// - With a timeout so you can press the button slightly before landing		
+		// - With a timeout so you can press the button slightly before landing
 		if (canJump && Time.time < lastJumpButtonTime + jumpTimeout) {
 			verticalSpeed = CalculateJumpVerticalSpeed (jumpHeight);
 			SendMessage("DidJump", SendMessageOptions.DontRequireReceiver);
@@ -252,15 +252,15 @@ function ApplyGravity ()
 	{
 		// Apply gravity
 		var jumpButton = Input.GetButton("Jump");
-		
-		
+
+
 		// When we reach the apex of the jump we send out a message
 		if (jumping && !jumpingReachedApex && verticalSpeed <= 0.0)
 		{
 			jumpingReachedApex = true;
 			SendMessage("DidJumpReachApex", SendMessageOptions.DontRequireReceiver);
 		}
-	
+
 		if (IsGrounded ())
 			verticalSpeed = 0.0;
 		else
@@ -270,7 +270,7 @@ function ApplyGravity ()
 
 function CalculateJumpVerticalSpeed (targetJumpHeight : float)
 {
-	// From the jump height and gravity we deduce the upwards speed 
+	// From the jump height and gravity we deduce the upwards speed
 	// for the character to reach at the apex.
 	return Mathf.Sqrt(2 * targetJumpHeight * gravity);
 }
@@ -282,12 +282,12 @@ function DidJump ()
 	lastJumpTime = Time.time;
 	lastJumpStartHeight = transform.position.y;
 	lastJumpButtonTime = -10;
-	
+
 	_characterState = CharacterState.Jumping;
 }
 
 function Update() {
-	
+
 	if (!isControllable)
 	{
 		// kill all inputs if not controllable.
@@ -300,7 +300,7 @@ function Update() {
 	}
 
 	UpdateSmoothedMovementDirection();
-	
+
 	// Apply gravity
 	// - extra power jump modifies gravity
 	// - controlledDescent mode modifies gravity
@@ -308,18 +308,18 @@ function Update() {
 
 	// Apply jumping logic
 	ApplyJumping ();
-	
+
 	// Calculate actual motion
 	var movement = moveDirection * moveSpeed + Vector3 (0, verticalSpeed, 0) + inAirVelocity;
 	movement *= Time.deltaTime;
-	
+
 	// Move the controller
 	var controller : CharacterController = GetComponent(CharacterController);
 	collisionFlags = controller.Move(movement);
-	
+
 	// ANIMATION sector
 	if(_animation) {
-		if(_characterState == CharacterState.Jumping) 
+		if(_characterState == CharacterState.Jumping)
 		{
 			if(!jumpingReachedApex) {
 				_animation[jumpPoseAnimation.name].speed = jumpAnimationSpeed;
@@ -328,41 +328,41 @@ function Update() {
 			} else {
 				_animation[jumpPoseAnimation.name].speed = -landAnimationSpeed;
 				_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
-				_animation.CrossFade(jumpPoseAnimation.name);				
+				_animation.CrossFade(jumpPoseAnimation.name);
 			}
-		} 
-		else 
+		}
+		else
 		{
 			if(controller.velocity.sqrMagnitude < 0.1) {
 				_animation.CrossFade(idleAnimation.name);
 			}
-			else 
+			else
 			{
 				if(_characterState == CharacterState.Running) {
 					_animation[runAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0, runMaxAnimationSpeed);
-					_animation.CrossFade(runAnimation.name);	
+					_animation.CrossFade(runAnimation.name);
 				}
 				else if(_characterState == CharacterState.Trotting) {
 					_animation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0, trotMaxAnimationSpeed);
-					_animation.CrossFade(walkAnimation.name);	
+					_animation.CrossFade(walkAnimation.name);
 				}
 				else if(_characterState == CharacterState.Walking) {
 					_animation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0, walkMaxAnimationSpeed);
-					_animation.CrossFade(walkAnimation.name);	
+					_animation.CrossFade(walkAnimation.name);
 				}
-				
+
 			}
 		}
 	}
 	// ANIMATION sector
-	
+
 	// Set rotation to the move direction
 	if (IsGrounded())
 	{
-		
+
 		transform.rotation = Quaternion.LookRotation(moveDirection);
-			
-	}	
+
+	}
 	else
 	{
 		var xzMove = movement;
@@ -371,8 +371,8 @@ function Update() {
 		{
 			transform.rotation = Quaternion.LookRotation(xzMove);
 		}
-	}	
-	
+	}
+
 	// We are in jump mode but just became grounded
 	if (IsGrounded())
 	{
@@ -389,7 +389,7 @@ function Update() {
 function OnControllerColliderHit (hit : ControllerColliderHit )
 {
 //	Debug.DrawRay(hit.point, hit.normal);
-	if (hit.moveDirection.y > 0.01) 
+	if (hit.moveDirection.y > 0.01)
 		return;
 }
 
@@ -413,7 +413,7 @@ function IsMovingBackwards () {
 	return movingBack;
 }
 
-function GetLockCameraTimer () 
+function GetLockCameraTimer ()
 {
 	return lockCameraTimer;
 }

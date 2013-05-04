@@ -3,7 +3,7 @@
 // Require a character controller to be attached to the same game object
 @script RequireComponent(CharacterController)
 
-public var walkSpeed = 2.0; // The speed when walking
+public var walkSpeed = 5.0; // The speed when walking
 public var runSpeed = 15.0; // when pressing "Fire3" button (cmd) we start running
 var inAirControlAcceleration = 3.0;
 
