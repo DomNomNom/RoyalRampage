@@ -3,7 +3,7 @@
 // Require a character controller to be attached to the same game object
 @script RequireComponent(CharacterController)
 
-public var walkSpeed = 5.0; // The speed when walking
+public var walkSpeed = 6.0; // The speed when walking
 public var runSpeed = 15.0; // when pressing "Fire3" button (cmd) we start running
 var inAirControlAcceleration = 3.0;
 
@@ -151,19 +151,14 @@ function UpdateSmoothedMovementDirection() {
         // We store speed and direction seperately,
         // so that when the character stands still we still have a valid forward direction
         // moveDirection is always normalized, and we only update it if there is user input.
-        if (targetDirection != Vector3.zero)
-        {
+        if (targetDirection != Vector3.zero) {
             // If we are really slow, just snap to the target direction
-            if (moveSpeed < walkSpeed * 0.9 && grounded)
-            {
+            if (false && moveSpeed < walkSpeed * 0.9 && grounded) {
                 moveDirection = targetDirection.normalized;
             }
             // Otherwise smoothly turn towards it
-            else
-            {
-                moveDirection = Vector3.RotateTowards(moveDirection, targetDirection, rotateSpeed * Mathf.Deg2Rad * Time.deltaTime, 1000);
-
-                moveDirection = moveDirection.normalized;
+            else {
+                moveDirection = Vector3.RotateTowards(moveDirection, targetDirection, rotateSpeed * Mathf.Deg2Rad * Time.deltaTime, 1000).normalized;
             }
         }
 
@@ -264,14 +259,12 @@ function DidJump () {
 
 function Update() {
 
-    if (!isControllable)
-    {
+    if (!isControllable)  {
         // kill all inputs if not controllable.
         Input.ResetInputAxes();
     }
 
-    if (Input.GetButtonDown ("Jump"))
-    {
+    if (Input.GetButtonDown ("Jump")) {
         lastJumpButtonTime = Time.time;
     }
 

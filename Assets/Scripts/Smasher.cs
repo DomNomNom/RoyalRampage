@@ -5,12 +5,11 @@ public class Smasher : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
-    }
+    void Start() { }
 
     // Update is called once per frame
-    void Update () {
-    }
+    void Update() { }
+
 
     //test
     public float pushPower = 10f;
