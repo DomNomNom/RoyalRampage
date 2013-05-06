@@ -15,7 +15,7 @@ Then we apply the smoothed values to the transform's position.
 // The target we are following
 private var target : Transform;
 private var desiredPos : Vector3;
-private var lookAt : Transform;
+public var lookAt : Transform;
 public var offset : Vector3;
 
 // The distance in the x-z plane to the target
@@ -38,7 +38,7 @@ function clone(v:Vector3) : Vector3 {
 function Start() {
     target = transform.parent;
     offset = transform.localPosition;
-    lookAt = target.gameObject.Find("LOOK_AT_ME").transform;
+    // lookAt = target.gameObject.Find("LOOK_AT_ME").transform;
 }
 function Update() {}
 
@@ -76,6 +76,7 @@ function LateUpdate() {
     // // transform.position -= currentRotation * Vector3.forward * distance;
     // desiredPos.z -= distance;
     // desiredPos.y = wantedHeight;
+    transform.LookAt(lookAt);
     desiredPos = target.position + offset;
     transform.position = Vector3.Lerp(transform.position, desiredPos, posDampening * Time.deltaTime);
 
@@ -84,5 +85,4 @@ function LateUpdate() {
     // Always look at the target
     // var rotation = Quaternion.LookRotation(lookAt.position - transform.position, Vector3.up);
     // transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationDamping * Time.deltaTime);
-    transform.LookAt(lookAt);
 }

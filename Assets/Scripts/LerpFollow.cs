@@ -11,6 +11,6 @@ public class LerpFollow : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        transform.position = Vector3.Lerp(transform.position, target.position, damping * Time.deltaTime);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, target.localPosition, damping * Time.deltaTime);
     }
 }

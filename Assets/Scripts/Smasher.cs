@@ -4,16 +4,18 @@ using System.Collections;
 public class Smasher : MonoBehaviour {
 
 
-    // Use this for initialization
-    void Start() { }
+
+
+    public float pushPower = 10f;
+
+    private ScreenShake screenShaker = null;
+
+    void Start() {
+        screenShaker = (ScreenShake)GetComponentInChildren(typeof(ScreenShake));
+    }
 
     // Update is called once per frame
     void Update() { }
-
-
-    //test
-    public float pushPower = 10f;
-
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -25,8 +27,6 @@ public class Smasher : MonoBehaviour {
             Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
             body.velocity = pushDir * pushPower;
 
-
-
         }
 
     }
@@ -34,6 +34,8 @@ public class Smasher : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         //Debug.Log("HITTING something with tag " + other.tag);
         // smashable things are now handled in the other object
+        screenShaker.shake();
+
         Explod explod = (Explod)other.GetComponent(typeof(Explod));
         if (explod != null) {
         //if (hit.gameObject.CompareTag("Breakable")) {
