@@ -76,9 +76,9 @@ function LateUpdate() {
     // // transform.position -= currentRotation * Vector3.forward * distance;
     // desiredPos.z -= distance;
     // desiredPos.y = wantedHeight;
-    transform.LookAt(lookAt);
     desiredPos = target.position + offset;
     transform.position = Vector3.Lerp(transform.position, desiredPos, posDampening * Time.deltaTime);
+    transform.LookAt(lookAt);
 
     // Debug.Log(transform.position);
 
