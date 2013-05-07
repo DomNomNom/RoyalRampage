@@ -19,7 +19,7 @@ public class ScreenShake : MonoBehaviour {
         if (remainingDuration > 0) {
             transform.localPosition += Random.insideUnitSphere * remainingDuration * shakeAmount;
             remainingDuration -= Time.deltaTime;
-            Debug.Log("Shake dat");
+//            Debug.Log("Shake dat");
         }
     }
 

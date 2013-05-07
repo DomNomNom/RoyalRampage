@@ -129,7 +129,7 @@ public class TileManager : MonoBehaviour {
             if      (child.gameObject.tag == "Tile")    _floorTiles.Add(child.gameObject);
             else if (child.gameObject.tag == "Wall")    _wallTiles.Add( child.gameObject);
             else if (child.gameObject.tag == "World")   referenceTile = child.gameObject ;
-            else                                        Debug.Log("A child with a weird label appeared. Label: " + child.gameObject.tag);
+            //else                                        Debug.Log("A child with a weird label appeared. Label: " + child.gameObject.tag);
         }
         floorTiles = _floorTiles.ToArray();
         wallTiles  =  _wallTiles.ToArray();
