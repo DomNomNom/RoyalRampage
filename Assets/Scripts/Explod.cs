@@ -28,6 +28,8 @@ public class Explod : MonoBehaviour {
 		// Get the parent object, ie. the one that's getting smashed
         GameObject smashedObject = transform.parent.gameObject;
 
+        
+
 		// Create the smoke.
         GameObject smoke = (GameObject) Instantiate(smokeParticles, smashedObject.transform.position, Quaternion.identity);
         smoke.transform.parent = world; // we attach it to the World

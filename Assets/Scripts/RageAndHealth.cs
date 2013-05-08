@@ -15,9 +15,9 @@ public class RageAndHealth : MonoBehaviour {
     public bool debug = true;
 
     ///the maximum health the player can have
-    private readonly int MAX_HEALTH = 100;
+    public readonly int MAX_HEALTH = 100;
     //the maximum rage the player can have
-    private readonly float MAX_RAGE = 100.0f;
+    public readonly float MAX_RAGE = 100.0f;
     //the amount which the rage decreases
     private readonly float RAGE_DECREASE = 3.0f;
 
