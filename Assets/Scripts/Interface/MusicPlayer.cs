@@ -72,23 +72,23 @@ public class MusicPlayer : MonoBehaviour {
     void checkMusic() {
 
         //get the player's rage level and check what music stage we should play
-        if (player.getRage() < 50) {
+        if (player.getRage() < 30) {
 
             changeMusic(musicStage1);
         }
-        else if (player.getRage() < 60) {
+        else if (player.getRage() < 45) {
 
             changeMusic(musicStage2);
         }
-        else if (player.getRage() < 70) {
+        else if (player.getRage() < 60) {
 
             changeMusic(musicStage3);
         }
-        else if (player.getRage() < 80) {
+        else if (player.getRage() < 90) {
 
             changeMusic(musicStage4);
         }
-        else if (player.getRage() < 90) {
+        else if (player.getRage() < 95) {
 
             changeMusic(musicStage5);
         }

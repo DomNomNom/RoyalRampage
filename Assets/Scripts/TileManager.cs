@@ -99,8 +99,7 @@ public class TileManager : MonoBehaviour {
     public int tilesAcross = 5;         // Width of street (in tiles)
     public int visibleRange = 30;       // Distance to render (in tiles)
     public int startAreaSize = 10;      // How many rows of tiles to generate behind the player
-
-
+	
     // Internal variables
     private GameObject[] floorTiles;   // List of all floor tiles
     private GameObject[] wallTiles ;   // List of all wall tiles
